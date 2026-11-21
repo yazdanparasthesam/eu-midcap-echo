@@ -1,0 +1,32 @@
+name: daily-pipeline
+
+on:
+  schedule:
+    # 18:05 CET (17:05 UTC) every weekday
+    - cron: "5 17 * * 1-5"
+  workflow_dispatch:
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: install deps
+        run: |
+          pip install -r requirements.txt
+      - name: daily predict
+        env:
+          TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: |
+          python scripts/daily_predict.py
+      - name: commit latest signals
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add reports/
+          git commit -m "daily signals: $(date -u +%F)" || echo "no changes to commit"
+          git push || echo "push failed (no permissions?)"
