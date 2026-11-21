@@ -109,6 +109,12 @@ def main():
             stage_train()
         if not args.features_only and not args.train_only or args.full or args.simulate_only:
             stage_simulate()
+            # Auto-generate equity-curve plot for README/report
+            try:
+                from scripts.make_report_plots import _main as _make_plots
+                _make_plots()
+            except Exception as e:
+                log.warning(f"could not generate report plot: {e}")
     log.info(f"done in {time.time()-t0:.1f}s")
 
 if __name__ == "__main__":

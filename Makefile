@@ -1,4 +1,4 @@
-.PHONY: help install data data-from-drive features train simulate pipeline predict-today dashboard test lint docker-build docker-run
+.PHONY: help install data data-from-drive features train simulate pipeline predict-today dashboard test lint docker-build docker-run report run_all
 
 help:
 	@echo "Available targets:"
@@ -8,37 +8,45 @@ help:
 	@echo "  make features         build unified dataset + features"
 	@echo "  make train            train & tune all models"
 	@echo "  make simulate         run all trading simulations"
-	@echo "  make pipeline         data + features + train + simulate"
+	@echo "  make report           consolidate reports + equity-curve plot"
+	@echo "  make run_all          full pipeline (data + features + train + simulate + report)"
 	@echo "  make predict-today    incremental daily prediction"
 	@echo "  make dashboard        launch Streamlit dashboard"
 	@echo "  make docker-build     build Docker image"
 	@echo "  make docker-run       run pipeline inside Docker"
-	@echo "  make test             run tests"
+	@echo "  make test             run pytest"
 	@echo "  make lint             ruff check"
 
 install:
 	pip install -r requirements.txt
 
 data:
-	python scripts/run_pipeline.py --download-only
+	python3 scripts/run_pipeline.py --download-only
 
 data-from-drive:
-	python scripts/run_pipeline.py --from-drive
+	python3 scripts/run_pipeline.py --from-drive
 
 features:
-	python scripts/run_pipeline.py --features-only
+	python3 scripts/run_pipeline.py --features-only
 
 train:
-	python scripts/run_pipeline.py --train-only
+	python3 scripts/run_pipeline.py --train-only
 
 simulate:
-	python scripts/run_pipeline.py --simulate-only
+	python3 scripts/run_pipeline.py --simulate-only
 
 pipeline:
-	python scripts/run_pipeline.py --full
+	python3 scripts/run_pipeline.py --full
+
+run_all:
+	python3 scripts/run_pipeline.py
+	python3 scripts/make_report_plots.py
+
+report:
+	python3 scripts/make_report_plots.py
 
 predict-today:
-	python scripts/daily_predict.py
+	python3 scripts/daily_predict.py
 
 dashboard:
 	streamlit run src/monitoring/dashboard.py --server.port=8501

@@ -222,6 +222,17 @@ Notebooks should be run in order `01 → 05`. Notebook 05 demonstrates the daily
 
 ## Metrics & Results
 
+<img width="1400" alt="equity curve" src="reports/equity_curve.png" />
+
+- Models:
+  - Precision, Accuracy, AUC (classification, threshold 0.55).
+  - Optuna tuning objective = validation precision @ 0.55.
+
+- Backtest:
+  - CAGR, Sharpe, Sortino.
+  - Max Drawdown, Win Rate, Number of Trades.
+  - Comparison with equal-weight benchmark of the universe.
+
 **Raw signal quality — vector sim ($100/trade flat bet, 20-day hold, 20 bps fees, out-of-sample Jan 2024 – Nov 2026):**
 
 | Threshold | Trades | Win Rate | CAGR | Max DD | Final $ (from $100k) |
