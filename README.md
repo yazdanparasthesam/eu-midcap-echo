@@ -211,10 +211,10 @@ An example is provided in `ops/cron.example`.
 # One-shot full pipeline (build features → train → simulate)
 python scripts/run_pipeline.py
 
-# Simulate only (uses existing model bundle, ~1 min)
+# Simulate only (uses existing model bundle)
 python scripts/run_pipeline.py --simulate-only
 
-# Daily incremental scoring (~1 min after first run)
+# Daily incremental scoring
 python scripts/daily_predict.py
 ```
 
